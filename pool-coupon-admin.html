@@ -36,7 +36,7 @@
   .tab-btn {
     flex:1; padding:12px 0; border:none; border-bottom:3px solid transparent;
     background:transparent; color:#94a3b8; font-family:'Noto Sans KR',sans-serif;
-    font-size:14px; font-weight:500; cursor:pointer; transition:all 0.2s;
+    font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s;
   }
   .tab-btn.active { color:#0891b2; border-bottom-color:#0891b2; font-weight:700; }
 
@@ -204,12 +204,14 @@
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="coupon" onclick="switchTab('coupon')">쿠폰 사용</button>
+    <button class="tab-btn" data-tab="notice" onclick="switchTab('notice')">공지사항</button>
     <button class="tab-btn" data-tab="history" onclick="switchTab('history')">이용 내역</button>
     <button class="tab-btn" data-tab="members" onclick="switchTab('members')">회원 관리 🔒</button>
   </div>
 
   <div class="content">
     <div id="tab-coupon"></div>
+    <div id="tab-notice" class="hidden"></div>
     <div id="tab-history" class="hidden"></div>
     <div id="tab-members" class="hidden"></div>
   </div>
@@ -328,7 +330,7 @@ function switchTab(tab) {
   if(tab==="members"&&!adminUnlocked) pwInput="";
   currentTab=tab;
   document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  ["coupon","history","members"].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle("hidden",t!==tab));
+  ["coupon","notice","history","members"].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle("hidden",t!==tab));
   render();
 }
 
@@ -423,7 +425,7 @@ function render() {
   const todayUses=data.history.filter(h=>h.date===today()&&h.type==="use").length;
   const sub=document.getElementById("headerSub");
   if(sub) sub.innerHTML=`${today()} · 오늘 사용: <strong>${todayUses}장</strong> · 등록 회원: <strong>${members.length}명</strong>`;
-  renderCoupon(); renderHistory(); renderMembers();
+  renderCoupon(); renderNotice(); renderHistory(); renderMembers();
 }
 
 function getRingColor(m) {
@@ -435,6 +437,118 @@ function getCardClass(m) {
   if(m.remaining===0) return "member-card empty";
   if(m.remaining<=2) return "member-card warn";
   return "member-card";
+}
+
+function renderNotice() {
+  const el=document.getElementById("tab-notice"); if(!el) return;
+  el.innerHTML=`
+    <div style="margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span style="font-size:22px;">📢</span>
+        <span style="font-size:17px;font-weight:800;color:#0f172a;">수중하키 정기세션 티켓 안내</span>
+      </div>
+      <p style="font-size:12px;color:#94a3b8;">2025년 3월 시행 · 화성 에스앤제이프리미엄 수영장</p>
+    </div>
+
+    <!-- 가격 안내 -->
+    <div class="card" style="border-color:#0891b2;border-width:2px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;">₩</span>
+        <span style="font-size:15px;font-weight:800;color:#0f172a;">티켓 가격 안내</span>
+      </div>
+
+      <div style="background:#f0fdfa;border-radius:10px;padding:14px;margin-bottom:12px;">
+        <p style="font-size:12px;font-weight:700;color:#0f766e;margin-bottom:10px;">📦 수량별 티켓 단가</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
+            <span style="font-size:13px;color:#334155;font-weight:600;">40매</span>
+            <span style="font-size:14px;font-weight:800;color:#059669;">16,000원/매</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
+            <span style="font-size:13px;color:#334155;font-weight:600;">30~39매</span>
+            <span style="font-size:14px;font-weight:800;color:#0891b2;">18,000원/매</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
+            <span style="font-size:13px;color:#334155;font-weight:600;">20~29매</span>
+            <span style="font-size:14px;font-weight:800;color:#0891b2;">20,000원/매</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
+            <span style="font-size:13px;color:#334155;font-weight:600;">10~19매</span>
+            <span style="font-size:14px;font-weight:800;color:#d97706;">22,000원/매</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
+            <span style="font-size:13px;color:#334155;font-weight:600;">5~9매</span>
+            <span style="font-size:14px;font-weight:800;color:#d97706;">24,000원/매</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fef2f2;border-radius:10px;padding:14px;">
+        <p style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:8px;">🎟️ 티켓 미보유 시</p>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #fecaca;margin-bottom:4px;">
+          <span style="font-size:13px;color:#334155;font-weight:600;">1회 참여비</span>
+          <span style="font-size:14px;font-weight:800;color:#ef4444;">25,000원 (현금)</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #fecaca;">
+          <span style="font-size:13px;color:#334155;font-weight:600;">첫 참여 1회</span>
+          <span style="font-size:14px;font-weight:800;color:#d97706;">20,000원 (현금)</span>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;padding:10px 12px;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;">
+        <p style="font-size:12px;color:#1e40af;font-weight:600;">💰 입금 안내</p>
+        <p style="font-size:13px;color:#1e3a5f;font-weight:700;margin-top:4px;">카카오뱅크 3333-31-7659013 (꼴뚜기)</p>
+        <p style="font-size:11px;color:#64748b;margin-top:2px;">선입금 · 현금만 가능</p>
+      </div>
+    </div>
+
+    <!-- 이용 안내 -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;">📋</span>
+        <span style="font-size:15px;font-weight:800;color:#0f172a;">이용 안내</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#334155;line-height:1.7;">
+        <div style="display:flex;gap:8px;">
+          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">사용처</span>
+          <span>화성 에스앤제이프리미엄 수영장 정기세션에서만 사용 가능 (비정기·타 수영장 불가)</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">세션일</span>
+          <span>매주 토요일 또는 일요일 (수영장 일정 및 클럽 정책에 따라 운영)</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">사용법</span>
+          <span>티켓 1매 = 세션 1회 참여. 실물 티켓 없이 대장으로 관리하며 참여 시 보유 수량에서 차감</span>
+        </div>
+
+        <div style="height:1px;background:#e2e8f0;margin:4px 0;"></div>
+
+        <div style="display:flex;gap:8px;">
+          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">구매</span>
+          <span>연중 수시 구매 가능 · 최소 5매 이상 · 인당 최대 40매</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">기한</span>
+          <span>2027년 2월 말까지 (약 40회 세션 예정)</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">양도</span>
+          <span>타인에게 양도 가능 · 단, 환불은 불가</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 클럽 안내 -->
+    <div style="padding:16px;border-radius:14px;background:linear-gradient(135deg,#f8fafc,#f0f9ff);border:1.5px dashed #cbd5e1;text-align:center;">
+      <p style="font-size:13px;color:#64748b;line-height:1.8;">
+        🏊 우리 클럽은 회비가 없습니다.<br>
+        모든 활동은 참여자의 자발적인 자원봉사 및 기부로 유지되며<br>
+        티켓 판매 수익은 <strong style="color:#0f172a;">대관료 및 공용비품 구매</strong>에 사용됩니다.
+      </p>
+    </div>
+  `;
 }
 
 function renderCoupon() {
