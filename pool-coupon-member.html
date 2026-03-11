@@ -451,16 +451,20 @@ function renderDetail(el, m) {
   } else {
     html+=monthHistory.map(r=>{
       const isUse=r.type==="use";
+      const companionInfo = r.companions&&r.companions.length ? `<div style="font-size:11px;color:#6366f1;padding-top:2px;">+동반: ${r.companions.join(', ')}</div>` : '';
       return `
-        <div class="history-row">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="history-type ${isUse?'type-use':'type-buy'}">${isUse?'사용':'구매'}</span>
-            <span style="color:#64748b;font-size:12px;">${isUse?'-1장':`+${r.amount}장`}</span>
+        <div class="history-row" style="flex-direction:column;align-items:stretch;gap:3px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="history-type ${isUse?'type-use':'type-buy'}">${isUse?'사용':'구매'}</span>
+              <span style="color:#64748b;font-size:12px;">${isUse?`-${r.amount||1}장`:`+${r.amount}장`}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:11px;">
+              <span>${r.date}</span><span>${r.time}</span>
+              ${r.remaining!=null&&isUse?`<span style="color:#64748b;">잔여${r.remaining}</span>`:''}
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:11px;">
-            <span>${r.date}</span><span>${r.time}</span>
-            ${r.remaining!=null?`<span style="color:#64748b;">잔여${r.remaining}</span>`:''}
-          </div>
+          ${companionInfo}
         </div>`;
     }).join('');
   }

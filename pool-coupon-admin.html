@@ -32,11 +32,11 @@
   .sync-dot.on { background:#34d399; animation:pulse 2s infinite; }
   .sync-dot.off { background:#ef4444; }
 
-  .tabs { display:flex; background:#fff; border-bottom:1px solid #e2e8f0; position:sticky; top:0; z-index:10; }
+  .tabs { display:flex; background:#fff; border-bottom:1px solid #e2e8f0; position:sticky; top:0; z-index:10; overflow-x:auto; }
   .tab-btn {
-    flex:1; padding:12px 0; border:none; border-bottom:3px solid transparent;
+    flex:1; padding:12px 4px; border:none; border-bottom:3px solid transparent;
     background:transparent; color:#94a3b8; font-family:'Noto Sans KR',sans-serif;
-    font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s;
+    font-size:12px; font-weight:500; cursor:pointer; transition:all 0.2s; white-space:nowrap; min-width:60px;
   }
   .tab-btn.active { color:#0891b2; border-bottom-color:#0891b2; font-weight:700; }
 
@@ -72,6 +72,8 @@
   .btn-danger-outline { border:1px solid #fecaca; background:#fff; color:#ef4444; }
   .btn-buy-sm { background:linear-gradient(135deg,#059669,#10b981); color:#fff; padding:6px 12px; font-size:12px; border:none; border-radius:6px; font-family:'Noto Sans KR',sans-serif; font-weight:700; cursor:pointer; transition:all 0.15s; }
   .btn-buy-sm:active { transform:scale(0.95); }
+  .btn-orange { background:linear-gradient(135deg,#ea580c,#f97316); color:#fff; padding:10px 18px; font-size:13px; border:none; border-radius:8px; font-family:'Noto Sans KR',sans-serif; font-weight:700; cursor:pointer; }
+  .btn-orange:active { transform:scale(0.96); }
 
   .input {
     padding:10px 12px; border-radius:8px; border:1.5px solid #e2e8f0;
@@ -88,6 +90,7 @@
   .badge-ok { background:#ecfdf5; color:#059669; }
   .badge-warn { background:#fef3c7; color:#d97706; }
   .badge-empty { background:#fef2f2; color:#ef4444; }
+  .badge-guest { background:#fdf4ff; color:#9333ea; }
 
   .empty-state { text-align:center; padding:60px 20px; color:#94a3b8; }
 
@@ -107,6 +110,18 @@
     font-size:15px; font-weight:700; cursor:pointer; transition:all 0.15s;
   }
   .modal-btn:active { transform:scale(0.97); }
+
+  /* Use Modal - companion input */
+  .use-modal {
+    background:#fff; border-radius:18px; padding:24px 20px; width:min(92vw,420px);
+    box-shadow:0 25px 60px rgba(0,0,0,0.25);
+  }
+  .use-modal-title { font-size:17px; font-weight:800; color:#0f172a; margin-bottom:16px; }
+  .companion-tag {
+    display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:20px;
+    background:#eff6ff; border:1px solid #bfdbfe; font-size:13px; font-weight:600; color:#1d4ed8; margin:3px;
+  }
+  .companion-tag button { background:none; border:none; cursor:pointer; font-size:14px; color:#64748b; padding:0; line-height:1; }
 
   .stamp-flash {
     position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
@@ -131,13 +146,14 @@
   .toast-error { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
 
   .history-row {
-    display:flex; align-items:center; justify-content:space-between;
+    display:flex; align-items:flex-start; justify-content:space-between;
     padding:10px 14px; border-radius:8px; background:#fff; border:1px solid #f1f5f9;
-    margin-bottom:4px; font-size:13px;
+    margin-bottom:4px; font-size:13px; gap:8px;
   }
-  .history-type { display:inline-flex; align-items:center; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; }
+  .history-type { display:inline-flex; align-items:center; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; flex-shrink:0; }
   .type-use { background:#fef2f2; color:#ef4444; }
   .type-buy { background:#ecfdf5; color:#059669; }
+  .type-guest { background:#fdf4ff; color:#9333ea; }
 
   .sort-chip {
     padding:6px 12px; border-radius:20px; border:1.5px solid #e2e8f0; background:#fff;
@@ -148,6 +164,15 @@
 
   .progress-bar { height:8px; border-radius:4px; background:#f1f5f9; overflow:hidden; margin-top:8px; }
   .progress-fill { height:100%; border-radius:4px; transition:width 0.4s ease; }
+
+  /* Ranking */
+  .rank-row {
+    display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:12px;
+    background:#fff; border:1.5px solid #e2e8f0; margin-bottom:8px;
+  }
+  .rank-medal { font-size:22px; width:32px; text-align:center; flex-shrink:0; }
+  .rank-bar { height:8px; border-radius:4px; background:#f1f5f9; overflow:hidden; flex:1; }
+  .rank-bar-fill { height:100%; border-radius:4px; background:linear-gradient(90deg,#0891b2,#06b6d4); }
 
   .pw-screen { display:flex; flex-direction:column; align-items:center; padding:60px 20px; gap:16px; }
   .pw-dots { display:flex; gap:12px; margin:8px 0 4px; }
@@ -163,15 +188,6 @@
   .pw-key:active { background:#f0f9ff; transform:scale(0.95); }
   .pw-key.empty { border:none; background:transparent; cursor:default; }
 
-  .config-screen {
-    padding:40px 20px; max-width:480px; margin:0 auto; text-align:center;
-  }
-  .config-screen textarea {
-    width:100%; min-height:180px; padding:12px; border-radius:10px; border:1.5px solid #e2e8f0;
-    font-family:monospace; font-size:12px; resize:vertical; outline:none;
-  }
-  .config-screen textarea:focus { border-color:#0891b2; }
-
   @keyframes slideDown { from{transform:translateX(-50%) translateY(-20px);opacity:0;} to{transform:translateX(-50%) translateY(0);opacity:1;} }
   @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
@@ -182,14 +198,13 @@
 
 <div id="toast" class="toast hidden"></div>
 <div id="alertModal" class="overlay hidden"></div>
+<div id="useModal" class="overlay hidden"></div>
 <div id="stampFlash" class="stamp-flash hidden"><div id="stampCircle" class="stamp-circle">
   <span style="font-size:12px;font-weight:800;color:#0891b2;letter-spacing:2px;">사용완료</span>
   <span style="font-size:24px;line-height:1.2;">🎫</span>
   <span style="font-size:10px;color:#0891b2;font-weight:600;">COUPON</span>
 </div></div>
 
-
-<!-- Main App -->
 <div id="mainApp" class="hidden">
   <div class="header">
     <div class="header-content">
@@ -204,24 +219,33 @@
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="coupon" onclick="switchTab('coupon')">쿠폰 사용</button>
-    <button class="tab-btn" data-tab="notice" onclick="switchTab('notice')">공지사항</button>
-    <button class="tab-btn" data-tab="history" onclick="switchTab('history')">이용 내역</button>
-    <button class="tab-btn" data-tab="members" onclick="switchTab('members')">회원 관리 🔒</button>
+    <button class="tab-btn" data-tab="guest" onclick="switchTab('guest')">현장입장 🟠</button>
+    <button class="tab-btn" data-tab="ranking" onclick="switchTab('ranking')">참여랭킹 🏆</button>
+    <button class="tab-btn" data-tab="history" onclick="switchTab('history')">이용내역</button>
+    <button class="tab-btn" data-tab="members" onclick="switchTab('members')">회원관리 🔒</button>
   </div>
 
   <div class="content">
     <div id="tab-coupon"></div>
-    <div id="tab-notice" class="hidden"></div>
+    <div id="tab-guest" class="hidden"></div>
+    <div id="tab-ranking" class="hidden"></div>
     <div id="tab-history" class="hidden"></div>
     <div id="tab-members" class="hidden"></div>
   </div>
 </div>
 
 <script>
-const CONFIG_KEY = "pool-firebase-config";
-const COUPON_UNITS = [5,10,20,30,50];
-const ADMIN_PW = "2602";
-let data = { members:[], history:[] };
+const HARDCODED_CONFIG = {
+  "apiKey": "AIzaSyBW_fArnqLwbvWqaEckqCJyEo26n-_IhlI",
+  "authDomain": "pool-coupon.firebaseapp.com",
+  "databaseURL": "https://pool-coupon-default-rtdb.asia-southeast1.firebasedatabase.app",
+  "projectId": "pool-coupon",
+  "storageBucket": "pool-coupon.firebasestorage.app",
+  "messagingSenderId": "786663186799",
+  "appId": "1:786663186799:web:0c07d50e06f925af64c89a"
+};
+
+let data = { members:[], history:[], settings:{} };
 let db = null;
 let firebaseConnected = false;
 let currentTab = "coupon";
@@ -229,46 +253,40 @@ let filterMonth = (() => { const d=new Date(); return `${d.getFullYear()}-${Stri
 let historySortBy = "date-desc";
 let adminUnlocked = false;
 let pwInput = "";
+let ADMIN_PW = "2602"; // will be overridden from firebase settings
+
+// pending use modal state
+let pendingUseId = null;
+let companions = []; // [{name, hasCoupon:false}]
+let companionInput = "";
 
 // ===== FIREBASE =====
-function loadConfig() {
-  try { const c=localStorage.getItem(CONFIG_KEY); return c?JSON.parse(c):null; } catch(e){ return null; }
-}
-function saveConfig() {
-  const raw=document.getElementById("configInput").value.trim();
-  try {
-    const config=JSON.parse(raw);
-    if(!config.databaseURL) throw new Error("databaseURL 필수");
-    localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-    location.reload();
-  } catch(e) { showToast("올바른 JSON 형식이 아닙니다: "+e.message,"error"); }
-}
 function initFirebase(config) {
   try {
     firebase.initializeApp(config);
     db = firebase.database();
-    // Listen for connection state
     db.ref('.info/connected').on('value', (snap) => {
       firebaseConnected = snap.val() === true;
       updateSyncBadge();
     });
-    // Listen for data changes
     db.ref('pool').on('value', (snap) => {
       const val = snap.val();
       if(val) {
         data.members = val.members ? Object.values(val.members) : [];
         data.history = val.history ? Object.values(val.history) : [];
-        render();
+        data.settings = val.settings || {};
+        if(data.settings.adminPw) ADMIN_PW = data.settings.adminPw;
       }
+      render();
     });
     return true;
-  } catch(e) { console.error("Firebase init error:",e); return false; }
+  } catch(e) { console.error(e); return false; }
 }
 function syncToFirebase() {
   if(!db) return;
   const membersObj = {}; data.members.forEach(m => membersObj[m.id]=m);
   const historyObj = {}; data.history.forEach(h => historyObj[h.id]=h);
-  db.ref('pool').set({ members:membersObj, history:historyObj });
+  db.ref('pool').set({ members:membersObj, history:historyObj, settings:data.settings||{} });
 }
 function updateSyncBadge() {
   const badge = document.getElementById("syncBadge");
@@ -284,18 +302,9 @@ function updateSyncBadge() {
 
 // ===== INIT =====
 function init() {
-  const HARDCODED_CONFIG = {
-    "apiKey": "AIzaSyBW_fArnqLwbvWqaEckqCJyEo26n-_IhlI",
-    "authDomain": "pool-coupon.firebaseapp.com",
-    "databaseURL": "https://pool-coupon-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "projectId": "pool-coupon",
-    "storageBucket": "pool-coupon.firebasestorage.app",
-    "messagingSenderId": "786663186799",
-    "appId": "1:786663186799:web:0c07d50e06f925af64c89a"
-  };
   document.getElementById("mainApp").classList.remove("hidden");
   if(!initFirebase(HARDCODED_CONFIG)) {
-    showToast("Firebase 연결 실패.","error");
+    showToast("Firebase 연결 실패.", "error");
   }
 }
 
@@ -330,68 +339,201 @@ function switchTab(tab) {
   if(tab==="members"&&!adminUnlocked) pwInput="";
   currentTab=tab;
   document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  ["coupon","notice","history","members"].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle("hidden",t!==tab));
+  ["coupon","guest","ranking","history","members"].forEach(t=>document.getElementById(`tab-${t}`).classList.toggle("hidden",t!==tab));
   render();
 }
 
-// ===== COUPON USE =====
-function useCoupon(memberId) {
+// ===== USE MODAL =====
+function openUseModal(memberId) {
   const m=data.members.find(x=>x.id===memberId);
   if(!m||m.remaining<=0){showToast("잔여 쿠폰이 없습니다","error");return;}
-  m.remaining--;
-  data.history.push({ id:uid(), memberId:m.id, memberName:m.name, type:"use", amount:1, remaining:m.remaining, date:today(), time:nowTime(), timestamp:new Date().toISOString() });
+  pendingUseId = memberId;
+  companions = [];
+  companionInput = "";
+  renderUseModal(m);
+  document.getElementById("useModal").className="overlay";
+}
+function closeUseModal() {
+  document.getElementById("useModal").classList.add("hidden");
+  pendingUseId = null; companions = [];
+}
+function renderUseModal(m) {
+  if(!m) m=data.members.find(x=>x.id===pendingUseId);
+  if(!m) return;
+  const el=document.getElementById("useModal");
+  const tagsHtml = companions.map((c,i)=>`
+    <span class="companion-tag">${c.name}<button onclick="removeCompanion(${i})">✕</button></span>
+  `).join('');
+  el.innerHTML=`<div class="use-modal">
+    <div class="use-modal-title">🎫 쿠폰 사용 — ${m.name}님</div>
+    <div style="background:#f0f9ff;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;color:#0369a1;">
+      잔여: <strong style="font-size:16px;">${m.remaining}장</strong>
+      ${companions.length>0?`<span style="margin-left:8px;">→ 차감: <strong>${companions.length+1}장</strong> (본인 + 동반 ${companions.length}명)</span>`:''}
+    </div>
+    
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:8px;">동반인원 (선택)</div>
+      <div style="font-size:12px;color:#64748b;margin-bottom:8px;">동반인 이름 입력 후 추가 — 1명당 쿠폰 1장 추가 차감</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="companionInput" class="input" style="flex:1;" placeholder="동반자 이름" 
+          value="${companionInput}"
+          onkeydown="if(event.key==='Enter')addCompanion()" 
+          oninput="companionInput=this.value">
+        <button class="btn btn-primary" style="padding:8px 14px;font-size:13px;" onclick="addCompanion()">추가</button>
+      </div>
+      ${tagsHtml ? `<div style="margin-top:6px;">${tagsHtml}</div>` : ''}
+    </div>
+
+    ${m.remaining < companions.length+1 ? `<div style="padding:10px;border-radius:8px;background:#fef2f2;color:#ef4444;font-size:13px;margin-bottom:12px;">⚠️ 잔여 쿠폰이 부족합니다 (필요: ${companions.length+1}장)</div>` : ''}
+    
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn" style="flex:1;background:#f1f5f9;color:#64748b;" onclick="closeUseModal()">취소</button>
+      <button class="btn btn-use" style="flex:2;" ${m.remaining<companions.length+1?'disabled':''} onclick="confirmUse()">
+        사용 확인 ${companions.length>0?`(${companions.length+1}장 차감)`:''}
+      </button>
+    </div>
+  </div>`;
+}
+function addCompanion() {
+  const val = document.getElementById("companionInput").value.trim();
+  if(!val){showToast("이름을 입력해주세요","error");return;}
+  companions.push({name:val});
+  companionInput="";
+  renderUseModal();
+  setTimeout(()=>{const inp=document.getElementById("companionInput");if(inp)inp.focus();},50);
+}
+function removeCompanion(idx) {
+  companions.splice(idx,1);
+  renderUseModal();
+}
+function confirmUse() {
+  const m=data.members.find(x=>x.id===pendingUseId);
+  if(!m)return;
+  const total = companions.length + 1;
+  if(m.remaining < total){showToast("쿠폰이 부족합니다","error");return;}
+  
+  m.remaining -= total;
+  const ts = new Date().toISOString();
+  const companionNames = companions.map(c=>c.name);
+  
+  // Main member history
+  data.history.push({
+    id:uid(), memberId:m.id, memberName:m.name, type:"use", amount:total,
+    remaining:m.remaining, date:today(), time:nowTime(), timestamp:ts,
+    companions: companionNames
+  });
+
+  // Each companion gets attendance record (type: "companion")
+  companionNames.forEach(name=>{
+    data.history.push({
+      id:uid(), memberId:"guest_"+name, memberName:name, type:"companion",
+      amount:0, date:today(), time:nowTime(), timestamp:ts,
+      paidBy:m.name
+    });
+  });
+
   syncToFirebase();
+  closeUseModal();
+
   showStamp(()=>{
     if(m.remaining===0){
       showAlert("🚨","쿠폰 소진!",`<strong>${m.name}</strong>님의 쿠폰이<br>모두 소진되었습니다.<br>추가 구매가 필요합니다.`,"확인","#ef4444",()=>render());
-    } else if(m.remaining===2&&!m.alertedAt2){
-      m.alertedAt2=true; syncToFirebase();
-      showAlert("⚠️","쿠폰 잔여 2장",`<strong>${m.name}</strong>님의 쿠폰이<br><strong>2장</strong> 남았습니다.<br>추가 구매를 안내해주세요.`,"확인","#d97706",()=>render());
-    } else if(m.remaining===1&&!m.alertedAt1){
-      m.alertedAt1=true; syncToFirebase();
-      showAlert("🔴","쿠폰 잔여 1장",`<strong>${m.name}</strong>님의 쿠폰이<br><strong>마지막 1장</strong> 남았습니다!`,"확인","#ef4444",()=>render());
-    } else { showToast(`${m.name}님 쿠폰 사용 (잔여 ${m.remaining}장)`); render(); }
+    } else if(m.remaining<=2&&!m.alertedLow){
+      m.alertedLow=true; syncToFirebase();
+      showAlert("⚠️","쿠폰 잔여 부족",`<strong>${m.name}</strong>님의 쿠폰이<br><strong>${m.remaining}장</strong> 남았습니다.<br>추가 구매를 안내해주세요.`,"확인","#d97706",()=>render());
+    } else {
+      const msg = companions.length>0 
+        ? `${m.name}님 + 동반 ${companions.length}명 (${total}장 차감, 잔여 ${m.remaining}장)`
+        : `${m.name}님 쿠폰 사용 (잔여 ${m.remaining}장)`;
+      showToast(msg); render();
+    }
   });
 }
 
+// ===== BUY COUPON =====
 function buyCoupon(memberId,amount) {
   const m=data.members.find(x=>x.id===memberId); if(!m)return;
-  m.remaining+=amount; m.totalBought+=amount; m.alertedAt2=false; m.alertedAt1=false;
+  m.remaining+=amount; m.totalBought+=amount; m.alertedLow=false;
   data.history.push({ id:uid(), memberId:m.id, memberName:m.name, type:"buy", amount, remaining:m.remaining, date:today(), time:nowTime(), timestamp:new Date().toISOString() });
   syncToFirebase(); showToast(`${m.name}님 쿠폰 ${amount}장 추가 완료 🎫`); render();
 }
 
+function buyCouponCustom(memberId) {
+  const inp = document.getElementById("buyCustom_"+memberId);
+  if(!inp) return;
+  const amount = parseInt(inp.value);
+  if(!amount||amount<1||amount>200){showToast("1~200 사이 숫자를 입력하세요","error");return;}
+  inp.value="";
+  buyCoupon(memberId, amount);
+}
+
+// ===== ADD MEMBER =====
 function addMember() {
-  const nameEl=document.getElementById("newName"), affEl=document.getElementById("newAff"), amtEl=document.getElementById("newAmt");
+  const nameEl=document.getElementById("newName"), affEl=document.getElementById("newAff"), amtEl=document.getElementById("newAmtCustom");
   const name=nameEl.value.trim(); if(!name)return;
   if(data.members.some(m=>m.name===name&&!m.deleted)){showToast("이미 등록된 이름입니다","error");return;}
-  const amount=parseInt(amtEl.value)||5, id=uid(), now=new Date().toISOString();
-  data.members.push({ id, name, affiliation:affEl.value.trim(), totalBought:amount, remaining:amount, alertedAt2:false, alertedAt1:false, createdAt:now });
+  const amount=parseInt(amtEl.value)||10;
+  if(amount<1||amount>200){showToast("쿠폰 수량을 확인해주세요 (1~200)","error");return;}
+  const id=uid(), now=new Date().toISOString();
+  data.members.push({ id, name, affiliation:affEl.value.trim(), totalBought:amount, remaining:amount, alertedLow:false, createdAt:now });
   data.history.push({ id:uid(), memberId:id, memberName:name, type:"buy", amount, remaining:amount, date:today(), time:nowTime(), timestamp:now });
-  syncToFirebase(); nameEl.value=""; affEl.value=""; amtEl.value="5";
+  syncToFirebase(); nameEl.value=""; affEl.value=""; amtEl.value="";
   showToast(`${name}님 등록 (${amount}장 구매)`); render();
 }
+
 function deleteMember(id) {
   const m=data.members.find(x=>x.id===id);
   if(!confirm(`${m.name}님을 삭제하시겠습니까?`))return;
   m.deleted=true; syncToFirebase(); showToast(`${m.name}님 삭제됨`); render();
 }
 
+// ===== GUEST ENTRY (현장입장, 티켓 없음) =====
+function addGuestEntry() {
+  const nameEl=document.getElementById("guestName");
+  const name=nameEl.value.trim(); if(!name){showToast("이름을 입력해주세요","error");return;}
+  data.history.push({
+    id:uid(), memberId:"guest_"+name, memberName:name, type:"guest",
+    amount:0, date:today(), time:nowTime(), timestamp:new Date().toISOString(),
+    note:"현장입장"
+  });
+  syncToFirebase(); nameEl.value="";
+  showToast(`${name}님 현장입장 기록 완료 🟠`); render();
+}
+
+// ===== CHANGE PASSWORD =====
+function changePassword() {
+  const cur=document.getElementById("pwCurrent").value;
+  const n1=document.getElementById("pwNew1").value;
+  const n2=document.getElementById("pwNew2").value;
+  if(cur!==ADMIN_PW){showToast("현재 비밀번호가 틀렸습니다","error");return;}
+  if(n1.length!==4||!/^\d{4}$/.test(n1)){showToast("새 비밀번호는 숫자 4자리여야 합니다","error");return;}
+  if(n1!==n2){showToast("새 비밀번호가 일치하지 않습니다","error");return;}
+  ADMIN_PW=n1;
+  if(!data.settings) data.settings={};
+  data.settings.adminPw=n1;
+  syncToFirebase();
+  document.getElementById("pwCurrent").value="";
+  document.getElementById("pwNew1").value="";
+  document.getElementById("pwNew2").value="";
+  showToast("비밀번호가 변경되었습니다 🔐");
+}
+
+// ===== EXPORT CSV =====
 function exportCSV() {
   const recs=sortedHistory();
-  const rows=[["날짜","시간","이름","구분","수량","잔여"]];
-  recs.forEach(r=>rows.push([r.date,r.time,r.memberName,r.type==="buy"?"구매":"사용",r.amount,r.remaining??"-"]));
+  const rows=[["날짜","시간","이름","구분","수량","잔여","동반/비고"]];
+  recs.forEach(r=>{
+    const typeLabel = r.type==="buy"?"구매":r.type==="use"?"사용":r.type==="guest"?"현장입장":"동반참석";
+    const extra = r.companions&&r.companions.length?r.companions.join("/"): r.paidBy?`${r.paidBy}님 동반`: r.note||"";
+    rows.push([r.date,r.time,r.memberName,typeLabel,r.amount||0,r.remaining??"-",extra]);
+  });
   const csv="\uFEFF"+rows.map(r=>r.join(",")).join("\n");
   const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`수영장쿠폰내역_${filterMonth}.csv`; a.click();
   showToast(`${filterMonth} CSV 저장 완료`);
 }
 
-function resetConfig() {
-  if(!confirm("Firebase 설정을 초기화하시겠습니까?\n(데이터는 Firebase에 그대로 남아있습니다)"))return;
-  localStorage.removeItem(CONFIG_KEY); location.reload();
-}
-
+// ===== SORT / FILTER =====
 function setSort(key) { historySortBy=key; render(); }
 function sortedHistory() {
   const recs=data.history.filter(r=>r.date.startsWith(filterMonth));
@@ -404,7 +546,30 @@ function sortedHistory() {
   });
 }
 
-// Password
+// ===== RANKING =====
+function buildRanking() {
+  // Count attendance per person (use=1+companions, companion=1, guest=1)
+  const counts = {};
+  const addCount = (name, date) => {
+    if(!name) return;
+    if(!counts[name]) counts[name]={name, count:0, dates:new Set()};
+    // count per session day (not per record)
+    const key=name+"_"+date;
+    counts[name].count++;
+    counts[name].dates.add(date);
+  };
+  data.history.forEach(h=>{
+    if(h.type==="use") {
+      addCount(h.memberName, h.date);
+      // companions already have their own records
+    } else if(h.type==="companion"||h.type==="guest") {
+      addCount(h.memberName, h.date);
+    }
+  });
+  return Object.values(counts).sort((a,b)=>b.count-a.count);
+}
+
+// ===== PASSWORD =====
 function pwKeyPress(key) {
   if(key==="del"){pwInput=pwInput.slice(0,-1);renderPwDots();return;}
   if(pwInput.length>=4)return;
@@ -422,146 +587,46 @@ function lockAdmin(){adminUnlocked=false;pwInput="";render();}
 // ===== RENDER =====
 function render() {
   const members=activeMembers();
-  const todayUses=data.history.filter(h=>h.date===today()&&h.type==="use").length;
+  const todayUses=data.history.filter(h=>h.date===today()&&(h.type==="use"||h.type==="guest"||h.type==="companion")).length;
   const sub=document.getElementById("headerSub");
-  if(sub) sub.innerHTML=`${today()} · 오늘 사용: <strong>${todayUses}장</strong> · 등록 회원: <strong>${members.length}명</strong>`;
-  renderCoupon(); renderNotice(); renderHistory(); renderMembers();
+  if(sub) sub.innerHTML=`${today()} · 오늘 참석: <strong>${todayUses}명</strong> · 등록 회원: <strong>${members.length}명</strong>`;
+  renderCoupon(); renderGuest(); renderRanking(); renderHistory(); renderMembers();
 }
 
 function getRingColor(m) {
   if(m.remaining===0) return {bg:"#fef2f2",border:"#ef4444",text:"#ef4444"};
-  if(m.remaining<=2) return {bg:"#fffbeb",border:"#f59e0b",text:"#d97706"};
+  if(m.remaining<=3) return {bg:"#fffbeb",border:"#f59e0b",text:"#d97706"};
   return {bg:"#ecfeff",border:"#0891b2",text:"#0891b2"};
 }
 function getCardClass(m) {
   if(m.remaining===0) return "member-card empty";
-  if(m.remaining<=2) return "member-card warn";
+  if(m.remaining<=3) return "member-card warn";
   return "member-card";
-}
-
-function renderNotice() {
-  const el=document.getElementById("tab-notice"); if(!el) return;
-  el.innerHTML=`
-    <div style="margin-bottom:20px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span style="font-size:22px;">📢</span>
-        <span style="font-size:17px;font-weight:800;color:#0f172a;">수중하키 정기세션 티켓 안내</span>
-      </div>
-      <p style="font-size:12px;color:#94a3b8;">2025년 3월 시행 · 화성 에스앤제이프리미엄 수영장</p>
-    </div>
-
-    <!-- 가격 안내 -->
-    <div class="card" style="border-color:#0891b2;border-width:2px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-        <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;">₩</span>
-        <span style="font-size:15px;font-weight:800;color:#0f172a;">티켓 가격 안내</span>
-      </div>
-
-      <div style="background:#f0fdfa;border-radius:10px;padding:14px;margin-bottom:12px;">
-        <p style="font-size:12px;font-weight:700;color:#0f766e;margin-bottom:10px;">📦 수량별 티켓 단가</p>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
-            <span style="font-size:13px;color:#334155;font-weight:600;">40매</span>
-            <span style="font-size:14px;font-weight:800;color:#059669;">16,000원/매</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
-            <span style="font-size:13px;color:#334155;font-weight:600;">30~39매</span>
-            <span style="font-size:14px;font-weight:800;color:#0891b2;">18,000원/매</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
-            <span style="font-size:13px;color:#334155;font-weight:600;">20~29매</span>
-            <span style="font-size:14px;font-weight:800;color:#0891b2;">20,000원/매</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
-            <span style="font-size:13px;color:#334155;font-weight:600;">10~19매</span>
-            <span style="font-size:14px;font-weight:800;color:#d97706;">22,000원/매</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #ccfbf1;">
-            <span style="font-size:13px;color:#334155;font-weight:600;">5~9매</span>
-            <span style="font-size:14px;font-weight:800;color:#d97706;">24,000원/매</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="background:#fef2f2;border-radius:10px;padding:14px;">
-        <p style="font-size:12px;font-weight:700;color:#991b1b;margin-bottom:8px;">🎟️ 티켓 미보유 시</p>
-        <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #fecaca;margin-bottom:4px;">
-          <span style="font-size:13px;color:#334155;font-weight:600;">1회 참여비</span>
-          <span style="font-size:14px;font-weight:800;color:#ef4444;">25,000원 (현금)</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#fff;border:1px solid #fecaca;">
-          <span style="font-size:13px;color:#334155;font-weight:600;">첫 참여 1회</span>
-          <span style="font-size:14px;font-weight:800;color:#d97706;">20,000원 (현금)</span>
-        </div>
-      </div>
-
-      <div style="margin-top:12px;padding:10px 12px;border-radius:8px;background:#eff6ff;border:1px solid #bfdbfe;">
-        <p style="font-size:12px;color:#1e40af;font-weight:600;">💰 입금 안내</p>
-        <p style="font-size:13px;color:#1e3a5f;font-weight:700;margin-top:4px;">카카오뱅크 3333-31-7659013 (꼴뚜기)</p>
-        <p style="font-size:11px;color:#64748b;margin-top:2px;">선입금 · 현금만 가능</p>
-      </div>
-    </div>
-
-    <!-- 이용 안내 -->
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-        <span style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;">📋</span>
-        <span style="font-size:15px;font-weight:800;color:#0f172a;">이용 안내</span>
-      </div>
-
-      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#334155;line-height:1.7;">
-        <div style="display:flex;gap:8px;">
-          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">사용처</span>
-          <span>화성 에스앤제이프리미엄 수영장 정기세션에서만 사용 가능 (비정기·타 수영장 불가)</span>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">세션일</span>
-          <span>매주 토요일 또는 일요일 (수영장 일정 및 클럽 정책에 따라 운영)</span>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <span style="color:#0891b2;font-weight:800;flex-shrink:0;">사용법</span>
-          <span>티켓 1매 = 세션 1회 참여. 실물 티켓 없이 대장으로 관리하며 참여 시 보유 수량에서 차감</span>
-        </div>
-
-        <div style="height:1px;background:#e2e8f0;margin:4px 0;"></div>
-
-        <div style="display:flex;gap:8px;">
-          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">구매</span>
-          <span>연중 수시 구매 가능 · 최소 5매 이상 · 인당 최대 40매</span>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">기한</span>
-          <span>2027년 2월 말까지 (약 40회 세션 예정)</span>
-        </div>
-        <div style="display:flex;gap:8px;">
-          <span style="color:#6366f1;font-weight:800;flex-shrink:0;">양도</span>
-          <span>타인에게 양도 가능 · 단, 환불은 불가</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- 클럽 안내 -->
-    <div style="padding:16px;border-radius:14px;background:linear-gradient(135deg,#f8fafc,#f0f9ff);border:1.5px dashed #cbd5e1;text-align:center;">
-      <p style="font-size:13px;color:#64748b;line-height:1.8;">
-        🏊 우리 클럽은 회비가 없습니다.<br>
-        모든 활동은 참여자의 자발적인 자원봉사 및 기부로 유지되며<br>
-        티켓 판매 수익은 <strong style="color:#0f172a;">대관료 및 공용비품 구매</strong>에 사용됩니다.
-      </p>
-    </div>
-  `;
 }
 
 function renderCoupon() {
   const el=document.getElementById("tab-coupon"); if(!el) return;
   const members=activeMembers();
-  if(members.length===0){
-    el.innerHTML=`<div class="empty-state"><div style="font-size:48px;margin-bottom:12px;">🎫</div><p style="font-size:15px;font-weight:600;margin-bottom:6px;">등록된 회원이 없습니다</p><p style="font-size:13px;">회원 관리 탭에서 먼저 등록해주세요</p></div>`;
-    return;
+  // Today attendance summary
+  const todayRecs = data.history.filter(h=>h.date===today());
+  const todayAttend = [...new Set(todayRecs.filter(h=>h.type==="use"||h.type==="companion"||h.type==="guest").map(h=>h.memberName))];
+  
+  let html="";
+  if(todayAttend.length>0){
+    html+=`<div class="card" style="border-color:#10b981;background:#f0fdf4;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;color:#065f46;margin-bottom:6px;">📋 오늘 참석 (${todayAttend.length}명)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">${todayAttend.map(n=>`<span style="padding:3px 10px;border-radius:20px;background:#dcfce7;color:#15803d;font-size:12px;font-weight:600;">${n}</span>`).join('')}</div>
+    </div>`;
   }
-  el.innerHTML=members.map(m=>{
+
+  if(members.length===0){
+    html+=`<div class="empty-state"><div style="font-size:48px;margin-bottom:12px;">🎫</div><p style="font-size:15px;font-weight:600;margin-bottom:6px;">등록된 회원이 없습니다</p><p style="font-size:13px;">회원 관리 탭에서 먼저 등록해주세요</p></div>`;
+    el.innerHTML=html; return;
+  }
+  html+=members.map(m=>{
     const ring=getRingColor(m);
     const pct=m.totalBought>0?(m.remaining/m.totalBought*100):0;
-    const statusBadge=m.remaining===0?`<span class="badge badge-empty">소진</span>`:m.remaining<=2?`<span class="badge badge-warn">⚠️ ${m.remaining}장 남음</span>`:`<span class="badge badge-ok">${m.remaining}장 남음</span>`;
+    const statusBadge=m.remaining===0?`<span class="badge badge-empty">소진</span>`:m.remaining<=3?`<span class="badge badge-warn">⚠️ ${m.remaining}장 남음</span>`:`<span class="badge badge-ok">${m.remaining}장 남음</span>`;
     return `
       <div class="${getCardClass(m)}">
         <div style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;">
@@ -575,16 +640,88 @@ function renderCoupon() {
             <div class="progress-bar" style="width:120px;"><div class="progress-fill" style="width:${pct}%;background:linear-gradient(90deg,${ring.border},${ring.border}88);"></div></div>
           </div>
         </div>
-        <button class="btn btn-use" ${m.remaining<=0?'disabled':''} onclick="useCoupon('${m.id}')">🎫 사용</button>
+        <button class="btn btn-use" ${m.remaining<=0?'disabled':''} onclick="openUseModal('${m.id}')">🎫 사용</button>
       </div>`;
   }).join('');
+  el.innerHTML=html;
+}
+
+function renderGuest() {
+  const el=document.getElementById("tab-guest"); if(!el) return;
+  // Today guests
+  const todayGuests = data.history.filter(h=>h.date===today()&&(h.type==="guest"||h.type==="companion"));
+  el.innerHTML=`
+    <div class="card" style="border-color:#ea580c;border-width:2px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+        <span style="font-size:22px;">🟠</span>
+        <span style="font-size:16px;font-weight:800;color:#0f172a;">현장 입장 등록</span>
+      </div>
+      <p style="font-size:13px;color:#64748b;margin-bottom:12px;">티켓 없이 현장 참석하는 분의 이름을 등록합니다.<br>참여 기록에 남아 랭킹에 반영됩니다.</p>
+      <div style="display:flex;gap:8px;">
+        <input id="guestName" class="input" style="flex:1;" placeholder="참석자 이름" onkeydown="if(event.key==='Enter')addGuestEntry()">
+        <button class="btn-orange" onclick="addGuestEntry()">등록</button>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#334155;margin-bottom:10px;">📋 오늘 현장/동반 참석 (${todayGuests.length}명)</div>
+    ${todayGuests.length===0
+      ? `<div style="text-align:center;padding:30px;color:#94a3b8;font-size:14px;">오늘 현장/동반 참석 기록이 없습니다</div>`
+      : todayGuests.map(r=>`
+        <div class="history-row" style="border-color:${r.type==='guest'?'#fed7aa':'#e9d5ff'};">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="history-type ${r.type==='guest'?'':'type-guest'}" style="${r.type==='guest'?'background:#fff7ed;color:#ea580c;':''}">
+              ${r.type==="guest"?"현장입장":"동반참석"}
+            </span>
+            <span style="font-weight:600;color:#0f172a;">${r.memberName}</span>
+            ${r.paidBy?`<span style="font-size:11px;color:#9333ea;">(${r.paidBy}님 동반)</span>`:''}
+          </div>
+          <span style="color:#94a3b8;font-size:11px;">${r.time}</span>
+        </div>`).join('')
+    }
+  `;
+}
+
+function renderRanking() {
+  const el=document.getElementById("tab-ranking"); if(!el) return;
+  const ranking = buildRanking();
+  const maxCount = ranking[0]?.count || 1;
+  const medals=["🥇","🥈","🥉"];
+
+  let html=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-size:17px;font-weight:800;color:#0f172a;">🏆 참여 랭킹</div>
+        <div style="font-size:12px;color:#64748b;margin-top:2px;">쿠폰 사용 + 동반 참석 + 현장 입장 통합</div>
+      </div>
+      <div style="font-size:12px;color:#94a3b8;">총 ${ranking.length}명</div>
+    </div>`;
+
+  if(ranking.length===0){
+    html+=`<div class="empty-state"><div style="font-size:48px;">🏆</div><p>참여 기록이 없습니다</p></div>`;
+    el.innerHTML=html; return;
+  }
+
+  html+=ranking.map((r,i)=>`
+    <div class="rank-row" style="${i<3?'border-color:#fbbf24;background:#fffbeb;':''}">
+      <div class="rank-medal">${i<3?medals[i]:`<span style="font-size:14px;font-weight:700;color:#94a3b8;">${i+1}</span>`}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:700;font-size:14px;color:#0f172a;margin-bottom:4px;">${r.name}</div>
+        <div class="rank-bar"><div class="rank-bar-fill" style="width:${Math.round(r.count/maxCount*100)}%;"></div></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:#0891b2;">${r.count}</div>
+        <div style="font-size:11px;color:#64748b;">회 참여</div>
+      </div>
+    </div>`).join('');
+  
+  el.innerHTML=html;
 }
 
 function renderHistory() {
   const el=document.getElementById("tab-history"); if(!el) return;
   const recs=sortedHistory();
   const allMonthRecs=data.history.filter(r=>r.date.startsWith(filterMonth));
-  const sortOptions=[{key:"date-desc",label:"최신순"},{key:"date-asc",label:"오래된순"},{key:"name-asc",label:"이름 ↑"},{key:"name-desc",label:"이름 ↓"},{key:"remaining-asc",label:"잔여 적은순"},{key:"remaining-desc",label:"잔여 많은순"}];
+  const sortOptions=[{key:"date-desc",label:"최신순"},{key:"date-asc",label:"오래된순"},{key:"name-asc",label:"이름 ↑"},{key:"name-desc",label:"이름 ↓"}];
   let html=`
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;">
       <input type="month" value="${filterMonth}" onchange="filterMonth=this.value;render();" class="input" style="flex:1 1 140px;">
@@ -597,12 +734,37 @@ function renderHistory() {
     html+=`<div class="empty-state" style="padding:40px"><div style="font-size:40px;margin-bottom:8px;">📭</div><p style="font-size:14px;">해당 월 내역이 없습니다</p></div>`;
   } else {
     html+=recs.map(r=>{
-      const isUse=r.type==="use";
-      return `<div class="history-row"><div style="display:flex;align-items:center;gap:10px;"><span class="history-type ${isUse?'type-use':'type-buy'}">${isUse?'사용':'구매'}</span><span style="font-weight:600;color:#0f172a;">${r.memberName}</span><span style="color:#64748b;font-size:12px;">${isUse?'-1장':`+${r.amount}장`}</span></div><div style="display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:11px;"><span>${r.date}</span><span>${r.time}</span>${r.remaining!=null?`<span style="color:#64748b;">잔여${r.remaining}</span>`:''}</div></div>`;
+      let typeLabel, typeCls;
+      if(r.type==="buy"){typeLabel="구매";typeCls="type-buy";}
+      else if(r.type==="use"){typeLabel="사용";typeCls="type-use";}
+      else if(r.type==="guest"){typeLabel="현장입장";typeCls="";}
+      else if(r.type==="companion"){typeLabel="동반참석";typeCls="type-guest";}
+      else{typeLabel=r.type;typeCls="";}
+      const extra = r.companions&&r.companions.length?` <span style="font-size:11px;color:#6366f1;">+동반: ${r.companions.join(', ')}</span>`
+        : r.paidBy?` <span style="font-size:11px;color:#9333ea;">(${r.paidBy}님 동반)</span>`:'';
+      const typeStyle = r.type==='guest' ? 'background:#fff7ed;color:#ea580c;' : r.type==='companion' ? 'background:#fdf4ff;color:#9333ea;' : '';
+      const amountStr = r.type==='buy' ? '+'+r.amount+'장' : r.type==='use' ? '-'+r.amount+'장' : '';
+      const remainStr = (r.remaining!=null && r.type==='use') ? '<span style="color:#64748b;">잔여'+r.remaining+'</span>' : '';
+      const extraDiv = extra ? '<div style="padding-left:4px;">'+extra+'</div>' : '';
+      return '<div class="history-row">'
+        + '<div style="display:flex;flex-direction:column;gap:2px;">'
+        + '<div style="display:flex;align-items:center;gap:8px;">'
+        + '<span class="history-type '+typeCls+'" style="'+typeStyle+'">'+typeLabel+'</span>'
+        + '<span style="font-weight:600;color:#0f172a;">'+r.memberName+'</span>'
+        + '<span style="color:#64748b;font-size:12px;">'+amountStr+'</span>'
+        + '</div>'
+        + extraDiv
+        + '</div>'
+        + '<div style="display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:11px;flex-shrink:0;">'
+        + '<span>'+r.date+'</span><span>'+r.time+'</span>'
+        + remainStr
+        + '</div>'
+        + '</div>';
     }).join('');
-    const uses=allMonthRecs.filter(r=>r.type==="use").length;
+    const uses=allMonthRecs.filter(r=>r.type==="use").reduce((s,r)=>s+(r.amount||0),0);
     const buys=allMonthRecs.filter(r=>r.type==="buy").reduce((s,r)=>s+r.amount,0);
-    html+=`<div style="padding:14px;border-radius:12px;font-size:13px;margin-top:14px;background:#f0fdfa;border:1px solid #ccfbf1;color:#0f766e;"><strong>${filterMonth}</strong> 쿠폰 사용: <strong>${uses}장</strong> · 구매: <strong>${buys}장</strong></div>`;
+    const guests=allMonthRecs.filter(r=>r.type==="guest"||r.type==="companion").length;
+    html+=`<div style="padding:14px;border-radius:12px;font-size:13px;margin-top:14px;background:#f0fdfa;border:1px solid #ccfbf1;color:#0f766e;"><strong>${filterMonth}</strong> 쿠폰 사용: <strong>${uses}장</strong> · 구매: <strong>${buys}장</strong> · 현장/동반: <strong>${guests}명</strong></div>`;
   }
   el.innerHTML=html;
 }
@@ -618,15 +780,30 @@ function renderMembers() {
     <div style="display:flex;justify-content:flex-end;margin-bottom:12px;gap:8px;">
       <button class="btn btn-sm" style="background:#64748b;color:#fff;border:none;border-radius:8px;font-family:'Noto Sans KR',sans-serif;font-weight:700;cursor:pointer;" onclick="lockAdmin()">🔒 잠금</button>
     </div>
+
+    <!-- 새 회원 등록 -->
     <div class="card" style="margin-bottom:16px;">
       <p style="margin-bottom:12px;font-weight:700;font-size:14px;color:#334155;">👤 새 회원 등록 + 쿠폰 구매</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
         <div style="flex:1 1 100px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">이름 *</label><input id="newName" class="input" style="width:100%;" placeholder="홍길동" onkeydown="if(event.key==='Enter')addMember()"></div>
         <div style="flex:1 1 80px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">소속</label><input id="newAff" class="input" style="width:100%;" placeholder="선택" onkeydown="if(event.key==='Enter')addMember()"></div>
-        <div style="flex:0 0 90px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">쿠폰</label><select id="newAmt" class="select" style="width:100%;">${COUPON_UNITS.map(u=>`<option value="${u}">${u}장</option>`).join('')}</select></div>
+        <div style="flex:0 0 90px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">쿠폰 수량</label><input id="newAmtCustom" class="input" style="width:100%;" type="number" min="1" max="200" placeholder="예: 40" onkeydown="if(event.key==='Enter')addMember()"></div>
         <button class="btn btn-primary" onclick="addMember()" style="flex:0 0 auto;">등록</button>
       </div>
     </div>
+
+    <!-- 비밀번호 변경 -->
+    <div class="card" style="margin-bottom:16px;border-color:#e0e7ff;">
+      <p style="margin-bottom:12px;font-weight:700;font-size:14px;color:#334155;">🔐 관리자 비밀번호 변경</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+        <div style="flex:1 1 80px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">현재 비번</label><input id="pwCurrent" class="input" style="width:100%;" type="password" maxlength="4" placeholder="****"></div>
+        <div style="flex:1 1 80px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">새 비번</label><input id="pwNew1" class="input" style="width:100%;" type="password" maxlength="4" placeholder="****"></div>
+        <div style="flex:1 1 80px;"><label style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px;display:block;">새 비번 확인</label><input id="pwNew2" class="input" style="width:100%;" type="password" maxlength="4" placeholder="****"></div>
+        <button class="btn btn-primary" onclick="changePassword()" style="flex:0 0 auto;background:linear-gradient(135deg,#6366f1,#4f46e5);">변경</button>
+      </div>
+      <p style="font-size:11px;color:#94a3b8;margin-top:8px;">* 숫자 4자리 · Firebase에 암호화 없이 저장됩니다 (관리자 앱에서만 표시)</p>
+    </div>
+
     <p style="font-size:13px;font-weight:700;color:#334155;margin-bottom:10px;">📋 회원 목록 (${members.length}명)</p>`;
 
   html+=members.map(m=>{
@@ -636,8 +813,15 @@ function renderMembers() {
         <div><span style="font-weight:700;font-size:15px;color:#0f172a;">${m.name}</span>${m.affiliation?`<span style="font-size:12px;color:#94a3b8;margin-left:6px;">(${m.affiliation})</span>`:''}</div>
         <button class="btn btn-sm btn-danger-outline" style="font-family:'Noto Sans KR',sans-serif;cursor:pointer;" onclick="deleteMember('${m.id}')">삭제</button>
       </div>
-      <div style="font-size:12px;color:#64748b;margin-bottom:8px;">총 구매 <strong>${m.totalBought}</strong>장 · 사용 <strong>${totalUsed}</strong>장 · 잔여 <strong style="color:${m.remaining<=2?'#ef4444':'#059669'}">${m.remaining}장</strong></div>
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span style="font-size:11px;color:#64748b;font-weight:600;">쿠폰 추가:</span>${COUPON_UNITS.map(u=>`<button class="btn-buy-sm" onclick="buyCoupon('${m.id}',${u})">${u}장</button>`).join('')}</div>
+      <div style="font-size:12px;color:#64748b;margin-bottom:8px;">총 구매 <strong>${m.totalBought}</strong>장 · 사용 <strong>${totalUsed}</strong>장 · 잔여 <strong style="color:${m.remaining<=3?'#ef4444':'#059669'}">${m.remaining}장</strong></div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
+        <span style="font-size:11px;color:#64748b;font-weight:600;">빠른 추가:</span>
+        ${[5,10,20,30,40].map(u=>`<button class="btn-buy-sm" onclick="buyCoupon('${m.id}',${u})">${u}장</button>`).join('')}
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <input id="buyCustom_${m.id}" class="input" style="width:80px;padding:6px 8px;font-size:13px;" type="number" min="1" max="200" placeholder="직접입력">
+        <button class="btn-buy-sm" onclick="buyCouponCustom('${m.id}')">추가</button>
+      </div>
     </div>`;
   }).join('');
 
